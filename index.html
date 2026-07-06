@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manuel d'utilisation - Interface de supervision HINA</title>
+  <meta name="description" content="Manuel d'utilisation de l'interface de supervision de l'alimentation Haute Tension ISEG integree au projet HINA et pilotee par EPICS.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Aller au contenu</a>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+      <div class="brand">
+        <div>
+          <strong>Interface de contrôle-commande</strong>
+          <span>Phoebus / EPICS</span>
+        </div>
+      </div>
+
+      <div class="sidebar-actions">
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Activer le mode sombre" title="Mode sombre">
+          <span aria-hidden="true">◐</span>
+        </button>
+        <button class="icon-button mobile-close" id="closeMenu" type="button" aria-label="Fermer le menu" title="Fermer">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <label class="search-box" for="searchInput">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="Rechercher..." autocomplete="off">
+      </label>
+      <p class="search-count" id="searchCount" aria-live="polite"></p>
+
+      <nav class="nav" id="mainNav">
+        <a href="#accueil">Accueil</a>
+        <a href="#presentation">Présentation</a>
+        <a href="#prerequis">Prérequis</a>
+        <a href="#lancement">Lancement</a>
+        <a href="#interface-principale">Interface principale</a>
+        <a href="#gestion-canaux">Gestion des canaux</a>
+        <a href="#reglage-tension">Réglage de la tension</a>
+        <a href="#reglage-courant">Réglage du courant</a>
+        <a href="#vue-detaillee">Vue détaillée</a>
+        <a href="#alarmes">Alarmes</a>
+        <a href="#depannage">Dépannage</a>
+        <a href="#glossaire">Glossaire</a>
+        <a href="#faq">FAQ</a>
+        <a href="#a-propos">À propos</a>
+      </nav>
+    </aside>
+
+    <div class="page">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="openMenu" type="button" aria-label="Ouvrir le menu" title="Menu">
+          <span aria-hidden="true">☰</span>
+        </button>
+        <div class="topbar-title">Manuel ISEG / HINA</div>
+        <button class="icon-button print-button" id="printPage" type="button" aria-label="Imprimer le manuel" title="Imprimer">
+          <span aria-hidden="true">⎙</span>
+        </button>
+      </header>
+
+      <main id="content" class="content">
+        <section class="hero" id="accueil" data-title="Accueil">
+          <div class="hero-copy">
+            <p class="eyebrow">Version 1.0</p>
+            <h1>Manuel d'utilisation</h1>
+            <p class="subtitle">Interface de contrôle-commande pour HINA<br>Alimentation Haute Tension ISEG</p>
+            <dl class="hero-meta">
+              <div><dt>Auteur</dt><dd>Mohammed CHIBANI BAHI</dd></div>
+              <div><dt>Laboratoire</dt><dd>IJCLab</dd></div>
+              <div><dt>Logiciel</dt><dd>CS-Studio, Phoebus</dd></div>
+            </dl>
+          </div>
+          <figure class="image-card hero-image">
+            <img src="images/main.png" alt="Capture reelle de l'interface principale HINA" data-full="images/main.png">
+            <figcaption>Capture réelle de l'écran principal de supervision des canaux haute tension.</figcaption>
+          </figure>
+        </section>
+
+        <section class="doc-section" id="sommaire" data-title="Sommaire">
+          <div class="section-heading">
+            <p class="eyebrow">Navigation</p>
+            <h2>Sommaire</h2>
+          </div>
+          <p>Utilisez ce sommaire pour accéder directement aux chapitres de prise en main, de réglage, de diagnostic et de dépannage de l'interface de supervision ISEG.</p>
+          <div class="toc" id="dynamicToc"></div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="presentation" data-title="Présentation">
+          <button class="section-toggle" type="button" aria-expanded="true">
+            <span>Présentation</span><span aria-hidden="true">⌄</span>
+          </button>
+          <div class="section-body">
+            <p class="lead">Le projet HINA est l'installation expérimentale globale. L'interface décrite dans ce manuel n'est qu'une brique de son futur système de contrôle-commande : elle supervise uniquement l'alimentation haute tension ISEG utilisée pour les quadrupôles électrostatiques.</p>
+            <p>Elle a été développée sous Phoebus pour rendre exploitables les données publiées par l'IOC EPICS intégré à l'alimentation. Son objectif est de donner aux utilisateurs une vue claire des 12 canaux : état ON/OFF, Trip, tensions, courants, consignes, mesures et accès aux réglages détaillés.</p>
+            <p>On peut voir le contrôle-commande global de HINA comme un orchestre : cette interface correspond à un instrument, par exemple un violoncelle. Seule, elle ne pilote qu'une partie précise de l'installation ; avec les autres interfaces à venir, elle contribuera à former l'ensemble cohérent du système de contrôle-commande HINA.</p>
+            <ol class="steps">
+              <li>Ouvrir l'écran principal <code>main.bob</code> dans Phoebus.</li>
+              <li>Vérifier que les 12 lignes de canaux sont visibles et que les valeurs EPICS sont connectées.</li>
+              <li>Contrôler l'état global de l'alimentation avec le voyant supérieur ON/OFF.</li>
+              <li>Utiliser <strong>Open</strong> pour consulter la vue détaillée d'un canal, puis les fenêtres de réglage si nécessaire.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Dans ce manuel, le terme interface désigne l'interface de supervision de l'alimentation ISEG, et non le projet HINA complet.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Commencez toujours par l'écran principal : il permet de savoir si le problème concerne un canal précis ou l'ensemble de l'alimentation.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Les réglages haute tension influencent directement les équipements expérimentaux. Ne modifiez une consigne que si la procédure d'exploitation vous y autorise.</p></aside>
+            </div>
+            <a class="next-link" href="#prerequis">Chapitre suivant : Prérequis</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="prerequis" data-title="Prérequis">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Prérequis</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Avant d'utiliser l'interface, le poste de contrôle doit pouvoir communiquer avec l'alimentation ISEG via le réseau local du laboratoire et le protocole EPICS Channel Access.</p>
+            <p>Dans le cadre du développement, l'alimentation a été raccordée au réseau par un switch Ethernet et configurée avec une adresse IP fixe <code>192.168.2.2</code>. L'interface Phoebus s'appuie ensuite sur les PV publiées par l'IOC embarqué de l'alimentation, sans serveur EPICS externe supplémentaire.</p>
+            <ol class="steps">
+              <li>Démarrer Phoebus avec le support Display Builder.</li>
+              <li>Vérifier que le poste de contrôle atteint l'alimentation ISEG sur le réseau local.</li>
+              <li>Contrôler que l'IOC embarqué publie les PV via Channel Access.</li>
+              <li>Vérifier l'accès aux fichiers <code>main.bob</code>, <code>detail_channel.bob</code>, <code>voltage_settings.bob</code> et <code>current_settings.bob</code>.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Les outils EPICS utiles sont <code>caget</code> pour lire une PV, <code>caput</code> pour écrire une consigne et <code>camonitor</code> pour suivre une valeur en temps réel.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Avant une session de test, vérifiez une mesure comme <code>ISEG:5230874:0:0:0:VoltageMeasure</code> avec <code>caget</code>.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Une PV déconnectée ou en état <code>UDF INVALID</code> indique que la valeur affichée n'est pas exploitable.</p></aside>
+            </div>
+            <a class="next-link" href="#lancement">Chapitre suivant : Lancement</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="lancement" data-title="Lancement">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Lancement</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Le lancement démarre par l'ouverture de <code>main.bob</code>, l'écran principal qui donne accès aux 12 canaux de l'alimentation.</p>
+            <p>Les fenêtres spécialisées sont réutilisées pour tous les canaux grâce aux macros Phoebus. La macro <code>$(CH)</code> est remplacée par le numéro du canal sélectionné afin de construire dynamiquement les noms de PV, par exemple <code>ISEG:5230874:0:0:$(CH):VoltageSet</code>.</p>
+            <ol class="steps">
+              <li>Démarrer Phoebus.</li>
+              <li>Ouvrir le fichier <code>main.bob</code>.</li>
+              <li>Attendre l'initialisation des widgets et la connexion des PV.</li>
+              <li>Cliquer sur <strong>Open</strong> sur un canal pour ouvrir <code>detail_channel.bob</code>.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Les scripts JavaScript Phoebus associent les widgets aux PV du canal au moment de l'ouverture des fenêtres spécialisées.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Si une fenêtre affiche le mauvais canal, vérifiez la valeur transmise à la macro <code>$(CH)</code>.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Ne travaillez pas sur une fenêtre dont les valeurs ne correspondent pas au canal sélectionné dans l'écran principal.</p></aside>
+            </div>
+            <a class="next-link" href="#interface-principale">Chapitre suivant : Interface principale</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="interface-principale" data-title="Interface principale">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Interface principale</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">L'écran principal <code>main.bob</code> fournit une vision globale des 12 canaux de l'alimentation ISEG.</p>
+            <p>Chaque ligne correspond à un canal. L'utilisateur peut visualiser l'état ON/OFF, l'état Trip, la tension de consigne <strong>Vset</strong>, la tension mesurée <strong>Vmeas</strong>, le courant mesuré <strong>Imeas</strong> et ouvrir la page détaillée avec le bouton <strong>Open</strong>.</p>
+            <div class="field-grid">
+              <div><span class="badge editable">Editables</span><strong>Vset et consignes</strong><p>Les champs bleu clair correspondent aux valeurs que l'utilisateur peut modifier lorsque l'écriture est autorisée.</p></div>
+              <div><span class="badge readonly">Consultables</span><strong>Vmeas, Imeas, Trip</strong><p>Les champs blancs ou gris affichent des valeurs mesurées ou des états renvoyés par l'IOC embarqué.</p></div>
+              <div><span class="badge action">Actions</span><strong>ON/OFF et Open</strong><p>Le bouton ON/OFF agit sur le canal ; le bouton Open ouvre la vue détaillée du canal sélectionné.</p></div>
+            </div>
+            <ol class="steps">
+              <li>Repérer la ligne du canal concerné, de <em>Channel 0</em> à <em>Channel 11</em>.</li>
+              <li>Vérifier le voyant ON/OFF et le voyant Trip.</li>
+              <li>Comparer <strong>Vset</strong> avec <strong>Vmeas</strong>, puis contrôler <strong>Imeas</strong>.</li>
+              <li>Cliquer sur <strong>Open</strong> pour consulter les détails, alarmes et réglages complets.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>L'interface principale joue le rôle de tableau de bord : elle évite de consulter individuellement chaque PV EPICS.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Une différence importante entre Vset et Vmeas peut indiquer une rampe en cours, un canal OFF ou une condition de protection.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Le voyant Trip doit être traité comme une mise en sécurité du canal ; consultez la vue détaillée avant toute remise en service.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/main.png" alt="Capture reelle de l'ecran principal avec canaux, consignes et mesures" data-full="images/main.png">
+              <figcaption>Organisation réelle de l'écran principal : commandes, états, consignes et mesures.</figcaption>
+            </figure>
+            <a class="next-link" href="#gestion-canaux">Chapitre suivant : Gestion des canaux</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="gestion-canaux" data-title="Gestion des canaux">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Gestion des canaux</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Un canal est une sortie indépendante de l'alimentation. Dans ce projet, les 12 canaux doivent pouvoir être surveillés séparément.</p>
+            <p>La gestion d'un canal consiste à vérifier son état réel, ses consignes, ses mesures, sa rampe éventuelle et les alarmes associées. Les fenêtres détaillées reprennent les blocs Voltage, Current, States et Alarmes pour le canal sélectionné.</p>
+            <ol class="steps">
+              <li>Identifier le canal dans l'écran principal.</li>
+              <li>Contrôler Trip et les mesures affichées.</li>
+              <li>Ouvrir la vue détaillée du canal avec <strong>Open</strong>.</li>
+              <li>Vérifier <strong>Canal On réel</strong>, <strong>Rampe en cours</strong>, <strong>Mode CV</strong> et <strong>Mode CC</strong>.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>La vue détaillée distingue la commande ON/OFF et l'état réel du canal, ce qui permet de détecter une commande refusée ou bloquée.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Après une modification, surveillez la rampe et attendez que la mesure se stabilise avant de passer au canal suivant.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Un canal peut rester OFF malgré une commande si un Trip, une limite ou une condition matérielle interdit l'activation.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/main.png" alt="Capture de la liste des canaux avec boutons ON OFF et Details" data-full="images/main.png">
+              <figcaption>Gestion des canaux depuis l'écran principal : ON/OFF, Trip, consignes, mesures et Details.</figcaption>
+            </figure>
+            <a class="next-link" href="#reglage-tension">Chapitre suivant : Réglage de la tension</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="reglage-tension" data-title="Réglage de la tension">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Réglage de la tension</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">La fenêtre <code>voltage_settings.bob</code> permet de consulter et régler les paramètres de tension du canal sélectionné.</p>
+            <p>Elle reprend les valeurs utiles retenues pendant le développement : tension de consigne, tension mesurée, tension nominale, vitesses de rampe et paramètres VTC. Cette fenêtre est réutilisée pour les 12 canaux grâce à la macro Phoebus <code>$(CH)</code>.</p>
+            <table>
+              <thead><tr><th>Paramètre</th><th>Rôle</th></tr></thead>
+              <tbody>
+                <tr><td>Voltage Set</td><td>Tension de consigne demandée par l'utilisateur pour le canal. Dans l'interface, ce champ apparaît en bleu clair lorsqu'il est modifiable.</td></tr>
+                <tr><td>Voltage Measure</td><td>Tension réellement mesurée par l'alimentation ISEG. Elle permet de vérifier si la tension appliquée suit bien la consigne.</td></tr>
+                <tr><td>Voltage Nominal</td><td>Tension nominale maximale du canal. Elle sert de référence de sécurité pour éviter une consigne incompatible avec le matériel.</td></tr>
+                <tr><td>Voltage Ramp Speed Up</td><td>Vitesse de montée de la tension lorsque la consigne augmente.</td></tr>
+                <tr><td>Voltage Ramp Speed Down</td><td>Vitesse de descente de la tension lorsque la consigne diminue.</td></tr>
+                <tr><td>Voltage Ramp Speed Min</td><td>Valeur minimale autorisée pour la vitesse de rampe.</td></tr>
+                <tr><td>Voltage Ramp Speed Max</td><td>Valeur maximale autorisée pour la vitesse de rampe.</td></tr>
+                <tr><td>VTC Coefficient</td><td>Coefficient de compensation thermique. Lorsque le module dispose de l'option VTC et d'un capteur connecté, la tension peut être ajustée selon la température du canal.</td></tr>
+                <tr><td>External Temperature</td><td>Température externe mesurée par le capteur associé au canal, utilisée pour le suivi ou la compensation VTC.</td></tr>
+              </tbody>
+            </table>
+            <ol class="steps">
+              <li>Depuis la vue du canal, ouvrir la fenêtre de réglage tension.</li>
+              <li>Lire <strong>Voltage Measure</strong> pour connaître la tension réelle.</li>
+              <li>Comparer <strong>Voltage Set</strong> avec <strong>Voltage Nominal</strong> avant toute modification.</li>
+              <li>Contrôler les vitesses de rampe puis suivre la stabilisation dans la vue détaillée.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Lors d'une rampe, <strong>Voltage Measure</strong> évolue progressivement vers <strong>Voltage Set</strong> au rythme défini par les paramètres de rampe.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Utilisez <code>camonitor</code> sur <code>VoltageMeasure</code> pour observer l'évolution de la tension pendant un test.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Ne changez pas le coefficient VTC sans vérifier que l'option matérielle et le capteur de température sont présents.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/voltage_settings.png" alt="Capture reelle de la fenetre Voltage settings du canal 0" data-full="images/voltage_settings.png">
+              <figcaption>Fenêtre Voltage réelle : consigne, mesure, limites et vitesses de rampe du canal.</figcaption>
+            </figure>
+            <a class="next-link" href="#reglage-courant">Chapitre suivant : Réglage du courant</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="reglage-courant" data-title="Réglage du courant">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Réglage du courant</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">La fenêtre <code>current_settings.bob</code> reprend la même logique que la fenêtre tension, mais pour les paramètres courant du canal.</p>
+            <p>Elle permet de consulter le courant mesuré, de régler la limite de courant, de configurer les rampes et de vérifier les paramètres de déclenchement différé <strong>Delayed Current Trip</strong>.</p>
+            <table>
+              <thead><tr><th>Paramètre</th><th>Rôle</th></tr></thead>
+              <tbody>
+                <tr><td>Current Set</td><td>Consigne ou limite de courant appliquée au canal. Elle définit le seuil de fonctionnement attendu.</td></tr>
+                <tr><td>Current Measure</td><td>Courant réellement mesuré par l'alimentation. Cette valeur permet de détecter une consommation anormale.</td></tr>
+                <tr><td>Current Nominal</td><td>Courant nominal maximal de référence pour le canal.</td></tr>
+                <tr><td>Current Ramp Speed Up</td><td>Vitesse de montée de la consigne ou limite courant.</td></tr>
+                <tr><td>Current Ramp Speed Down</td><td>Vitesse de descente de la consigne ou limite courant.</td></tr>
+                <tr><td>Current Ramp Speed Min</td><td>Valeur minimale autorisée pour la rampe courant.</td></tr>
+                <tr><td>Current Ramp Speed Max</td><td>Valeur maximale autorisée pour la rampe courant.</td></tr>
+                <tr><td>Trip Delay</td><td>Délai avant déclenchement du Trip après dépassement ou condition de protection liée au courant.</td></tr>
+                <tr><td>Trip Mode</td><td>Mode de déclenchement associé au courant. Il définit le comportement de protection appliqué par l'alimentation.</td></tr>
+              </tbody>
+            </table>
+            <ol class="steps">
+              <li>Ouvrir la fenêtre courant depuis le canal concerné.</li>
+              <li>Comparer <strong>Current Measure</strong>, <strong>Current Set</strong> et <strong>Current Nominal</strong>.</li>
+              <li>Vérifier les rampes de courant.</li>
+              <li>Lire <strong>Trip Mode</strong> et <strong>Trip Delay</strong> avant de modifier une limite.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Le mode <strong>CC</strong> visible dans la vue détaillée indique un fonctionnement en régulation ou limitation de courant.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Si un Trip survient, comparez le courant mesuré avec la limite configurée avant toute remise en route.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Une augmentation de <strong>Current Set</strong> ne doit pas servir à contourner un défaut ou une fuite réelle.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/current_settings.png" alt="Capture reelle de la fenetre Current settings du canal 0" data-full="images/current_settings.png">
+              <figcaption>Fenêtre Current réelle : limites, mesures, rampes et paramètres de Trip.</figcaption>
+            </figure>
+            <a class="next-link" href="#vue-detaillee">Chapitre suivant : Vue détaillée</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="vue-detaillee" data-title="Vue détaillée">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Vue détaillée</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">La vue <code>detail_channel.bob</code> regroupe les informations complètes du canal sélectionné.</p>
+            <p>Elle reprend les blocs Voltage et Current, ajoute un bloc d'états et un bloc d'alarmes. C'est la fenêtre à consulter lorsqu'un canal ne réagit pas comme prévu, lorsqu'un Trip apparaît ou lorsque l'on veut confirmer le mode de régulation réel.</p>
+            <table>
+              <thead><tr><th>Indicateur</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>État du canal</td><td>Vue synthétique de l'état du canal dans le bloc States.</td></tr>
+                <tr><td>ON réel</td><td>Retour matériel indiquant si le canal est réellement activé, indépendamment de la commande demandée.</td></tr>
+                <tr><td>Trip</td><td>Voyant du bloc Alarmes signalant un déclenchement de sécurité.</td></tr>
+                <tr><td>Current Limit</td><td>Voyant indiquant que la limite de courant est atteinte ou active.</td></tr>
+                <tr><td>Voltage Limit</td><td>Voyant indiquant que la limite de tension est atteinte ou active.</td></tr>
+                <tr><td>Status</td><td>État interprété par l'interface à partir des PV du canal.</td></tr>
+                <tr><td>Status brut</td><td>Code d'état brut renvoyé par l'alimentation, utile lors d'un diagnostic avancé.</td></tr>
+                <tr><td>CV</td><td>Constant Voltage : le canal fonctionne en régulation de tension.</td></tr>
+                <tr><td>CC</td><td>Constant Current : le canal fonctionne en régulation ou limitation de courant.</td></tr>
+                <tr><td>Ramping</td><td>Indique qu'une rampe de tension est en cours.</td></tr>
+                <tr><td>Alarmes</td><td>Bloc regroupant Trip, Voltage Limite, Current Limite et Status brut.</td></tr>
+                <tr><td>Diagnostic</td><td>Lecture croisée des états, mesures, limites et alarmes du canal.</td></tr>
+              </tbody>
+            </table>
+            <ol class="steps">
+              <li>Cliquer sur <strong>Open</strong> dans la ligne du canal.</li>
+              <li>Lire le bloc States : ON réel, rampe en cours, mode CV et mode CC.</li>
+              <li>Lire le bloc Alarmes : Trip, Voltage Limite, Current Limite et Status brut.</li>
+              <li>Comparer les blocs Voltage et Current avec les valeurs visibles sur l'écran principal.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>La vue détaillée a été conçue pour éviter de multiplier les fenêtres : les informations tension, courant, états et alarmes sont réunies sur un seul écran.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Pour comprendre un comportement inattendu, lisez d'abord les voyants, puis les valeurs mesurées, puis les consignes.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Un voyant vert indique un état actif ou normal selon le champ ; vérifiez toujours le libellé associé au voyant.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/detail_channel.png" alt="Capture reelle de la vue detaillee du canal 0" data-full="images/detail_channel.png">
+              <figcaption>Vue détaillée réelle : état réel, protections, régulation, blocs Voltage et Current.</figcaption>
+            </figure>
+            <a class="next-link" href="#alarmes">Chapitre suivant : Alarmes</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="alarmes" data-title="Alarmes">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Alarmes</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Le bloc Alarmes de la vue détaillée signale les conditions de protection ou d'anomalie du canal.</p>
+            <p>Dans cette interface, les informations d'alarme sont issues des PV de l'alimentation ISEG. Elles permettent de repérer un Trip, une limite de tension, une limite de courant ou un état brut renvoyé par le matériel.</p>
+            <ol class="steps">
+              <li>Identifier le canal concerné depuis l'écran principal.</li>
+              <li>Ouvrir sa vue détaillée.</li>
+              <li>Lire les voyants <strong>Trip</strong>, <strong>Voltage Limite</strong> et <strong>Current Limite</strong>.</li>
+              <li>Noter le <strong>Status brut</strong> si une analyse plus poussée est nécessaire.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Un état EPICS <code>UDF INVALID</code> signifie que la PV ne possède pas de valeur valide au moment de la lecture.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Utilisez <code>camonitor</code> pour vérifier si une alarme ou une mesure évolue réellement dans le temps.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Un Trip est une protection. Il ne doit pas être ignoré ni contourné par une simple modification de consigne.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/detail_channel.png" alt="Capture du bloc alarmes dans la vue detaillee du canal" data-full="images/detail_channel.png">
+              <figcaption>Bloc Alarmes de la vue détaillée : Trip, Voltage Limite, Current Limite et Status brut.</figcaption>
+            </figure>
+            <a class="next-link" href="#depannage">Chapitre suivant : Dépannage</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="depannage" data-title="Dépannage">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Dépannage</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Le dépannage doit partir des symptômes visibles dans Phoebus, puis vérifier la communication EPICS et enfin l'état matériel de l'alimentation.</p>
+            <p>Le cas le plus important rencontré pendant le développement concernait des mesures bloquées à zéro avec l'état <code>UDF INVALID</code>. La cause identifiée était l'absence du champ <code>SCAN</code> dans les records de mesure, corrigée par <code>field(SCAN, "1 second")</code>, puis redéploiement et redémarrage de l'IOC.</p>
+            <table>
+              <thead><tr><th>Symptôme</th><th>Cause probable</th><th>Solution</th></tr></thead>
+              <tbody>
+                <tr><td>Tous les PV sont gris.</td><td>Alimentation non joignable, IOC embarqué indisponible ou problème Channel Access.</td><td>Tester le réseau, puis lire une PV avec <code>caget</code>.</td></tr>
+                <tr><td>Impossible de modifier une valeur.</td><td>Champ en lecture seule, PV non modifiable ou canal dans un état bloquant.</td><td>Vérifier que le champ est bleu clair, puis contrôler l'état du canal.</td></tr>
+                <tr><td>Canal bloqué en Trip.</td><td>Déclenchement de protection lié au courant, à la tension ou à l'état matériel.</td><td>Ouvrir la vue détaillée, lire Trip, limites et Status brut avant remise en service.</td></tr>
+                <tr><td>Connexion EPICS perdue.</td><td>Problème réseau, switch, adresse IP, IOC ou Channel Access.</td><td>Tester <code>ping</code>, <code>caget</code> et l'accès à iCS2.</td></tr>
+                <tr><td>IOC arrêté.</td><td>IOC embarqué non actif ou redémarrage nécessaire après configuration.</td><td>Redémarrer l'IOC selon la procédure ISEG/iCS2.</td></tr>
+                <tr><td>Perte du réseau Ethernet.</td><td>Switch déconnecté, câble défaillant ou adresse IP inaccessible.</td><td>Vérifier la liaison réseau locale avec l'alimentation.</td></tr>
+                <tr><td>Impossible d'ouvrir une fenêtre.</td><td>Fichier <code>.bob</code> absent, chemin incorrect ou macro <code>$(CH)</code> non transmise.</td><td>Vérifier <code>detail_channel.bob</code>, <code>voltage_settings.bob</code> et <code>current_settings.bob</code>.</td></tr>
+                <tr><td><code>VoltageMeasure</code> ou <code>CurrentMeasure</code> reste à zéro.</td><td>Record EPICS en mode Passive, absence de champ <code>SCAN</code>, état <code>UDF INVALID</code>.</td><td>Ajouter <code>field(SCAN, "1 second")</code> aux records concernés, redéployer puis redémarrer l'IOC.</td></tr>
+              </tbody>
+            </table>
+            <ol class="steps">
+              <li>Identifier si le problème touche un canal ou l'ensemble de l'alimentation.</li>
+              <li>Tester la communication réseau avec l'alimentation.</li>
+              <li>Lire une PV avec <code>caget</code> et suivre son évolution avec <code>camonitor</code>.</li>
+              <li>Comparer Phoebus avec iCS2 lorsque c'est possible.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Les fichiers <code>.db</code>, <code>.sub</code> et <code>.pv</code> expliquent comment les PV sont générées et publiées par l'IOC.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Si une mesure ne se met pas à jour, vérifiez d'abord son mode de scan avant de chercher un défaut matériel.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Ne concluez pas qu'une valeur Phoebus est correcte tant que la PV n'a pas été validée côté EPICS ou iCS2.</p></aside>
+            </div>
+            <figure class="image-card">
+              <img src="images/main.png" alt="Capture de l'ecran principal utilise pour diagnostiquer les PV et canaux" data-full="images/main.png">
+              <figcaption>L'écran principal permet d'identifier rapidement si le problème touche un canal ou l'ensemble des PV.</figcaption>
+            </figure>
+            <a class="next-link" href="#glossaire">Chapitre suivant : Glossaire</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="glossaire" data-title="Glossaire">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>Glossaire</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Ce glossaire reprend les termes utilisés dans l'interface de supervision ISEG, dans EPICS et dans le contexte du projet HINA.</p>
+            <div class="glossary">
+              <p><strong>EPICS</strong> : Experimental Physics and Industrial Control System, ensemble d'outils utilisés pour construire des systèmes de contrôle-commande distribués.</p>
+              <p><strong>IOC</strong> : Input Output Controller, serveur EPICS connecté au matériel. Dans ce projet, l'IOC est embarqué dans l'alimentation ISEG.</p>
+              <p><strong>Process Variable</strong> : variable EPICS représentant une mesure, une consigne, un état ou une alarme.</p>
+              <p><strong>PV</strong> : abréviation de Process Variable.</p>
+              <p><strong>ISEG</strong> : constructeur d'alimentations haute tension utilisées dans des installations scientifiques.</p>
+              <p><strong>High Voltage</strong> : haute tension fournie aux équipements expérimentaux, notamment aux quadrupôles électrostatiques.</p>
+              <p><strong>Canal</strong> : sortie indépendante de l'alimentation permettant de piloter un équipement ou une voie spécifique.</p>
+              <p><strong>Trip</strong> : déclenchement de protection à la suite d'une condition anormale.</p>
+              <p><strong>Current Limit</strong> : limite courant atteinte ou active.</p>
+              <p><strong>Voltage Limit</strong> : limite tension atteinte ou active.</p>
+              <p><strong>Ramp</strong> : progression contrôlée d'une valeur vers une consigne.</p>
+              <p><strong>CV</strong> : Constant Voltage, régulation en tension.</p>
+              <p><strong>CC</strong> : Constant Current, régulation ou limitation en courant.</p>
+              <p><strong>Phoebus</strong> : logiciel de supervision permettant de créer des interfaces graphiques pour les systèmes EPICS.</p>
+              <p><strong>Display Builder</strong> : outil Phoebus utilisé pour construire les fichiers d'interface <code>.bob</code>.</p>
+              <p><strong>Macro</strong> : paramètre de substitution permettant de réutiliser une même fenêtre pour plusieurs canaux, par exemple <code>$(CH)</code>.</p>
+              <p><strong>Embedded Display</strong> : affichage Phoebus intégré dans un autre affichage.</p>
+              <p><strong>Channel Access</strong> : protocole EPICS client/serveur utilisé pour lire, écrire et surveiller les PV.</p>
+              <p><strong>iCS2</strong> : interface web fournie par ISEG pour configurer et administrer l'alimentation.</p>
+              <p><strong>SCAN</strong> : champ EPICS définissant la fréquence de mise à jour automatique d'une PV.</p>
+              <p><strong>UDF INVALID</strong> : état EPICS indiquant qu'une PV ne possède pas de valeur valide.</p>
+              <p><strong>Fichier .db</strong> : fichier modèle contenant les définitions des records EPICS.</p>
+              <p><strong>Fichier .sub</strong> : fichier de substitution injectant les paramètres réels du matériel dans les modèles.</p>
+              <p><strong>Fichier .pv</strong> : fichier listant les Process Variables générées et accessibles.</p>
+              <p><strong>Quadrupôle électrostatique</strong> : élément d'optique ionique utilisé pour guider ou focaliser les ions.</p>
+            </div>
+            <ol class="steps">
+              <li>Identifier le terme dans l'écran Phoebus ou dans le message EPICS.</li>
+              <li>Consulter la définition correspondante.</li>
+              <li>Revenir à la section du manuel associée au champ ou à l'état concerné.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>Le nom d'une PV ISEG suit une nomenclature qui contient notamment le numéro de série, le module et le canal.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Pour diagnostiquer un problème, notez le nom complet de la PV concernée avant de lancer <code>caget</code> ou <code>camonitor</code>.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Les termes constructeur ISEG peuvent avoir une signification précise dans la documentation matérielle.</p></aside>
+            </div>
+            <a class="next-link" href="#faq">Chapitre suivant : FAQ</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="faq" data-title="FAQ">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>FAQ</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Cette FAQ répond aux situations les plus probables lors de l'utilisation de l'interface de supervision ISEG et de ses fenêtres Phoebus.</p>
+            <div class="faq-list">
+              <details open><summary>Pourquoi certaines valeurs sont-elles grisées ?</summary><p>Les valeurs grisées correspondent généralement à des mesures ou états en lecture seule, comme <strong>Vmeas</strong>, <strong>Imeas</strong> ou <strong>Status brut</strong>. Si un champ normalement actif devient gris, vérifiez la connexion de la PV.</p></details>
+              <details><summary>Pourquoi les mesures restent-elles à zéro ?</summary><p>Si <strong>VoltageMeasure</strong> ou <strong>CurrentMeasure</strong> reste à zéro avec l'état <code>UDF INVALID</code>, le record EPICS peut ne pas être scanné automatiquement. Le correctif utilisé pendant le stage a été d'ajouter <code>field(SCAN, "1 second")</code> puis de redéployer et redémarrer l'IOC.</p></details>
+              <details><summary>Comment vérifier une PV sans Phoebus ?</summary><p>Utilisez <code>caget</code> pour lire une PV, <code>caput</code> pour modifier une consigne autorisée et <code>camonitor</code> pour suivre une mesure en temps réel.</p></details>
+              <details><summary>Pourquoi une valeur est-elle inaccessible ?</summary><p>Le champ peut être en lecture seule, associé à une PV non connectée, verrouillé par l'état du canal ou non prévu comme réglage utilisateur.</p></details>
+              <details><summary>Pourquoi le canal reste OFF ?</summary><p>La commande peut être bloquée par un Trip, une limite atteinte, un état matériel non valide ou une perte de communication EPICS.</p></details>
+              <details><summary>Comment savoir si une rampe est en cours ?</summary><p>Ouvrez la vue détaillée et contrôlez le voyant <strong>Rampe en cours (V)</strong>. Pendant la rampe, <strong>Voltage Measure</strong> évolue progressivement vers <strong>Voltage Set</strong>.</p></details>
+              <details><summary>À quoi servent les macros Phoebus ?</summary><p>Elles évitent de créer une fenêtre différente pour chaque canal. La macro <code>$(CH)</code> remplace dynamiquement le numéro de canal dans les noms de PV.</p></details>
+              <details><summary>Pourquoi comparer Phoebus avec iCS2 ?</summary><p>iCS2 est l'interface web constructeur. Elle peut aider à confirmer si une valeur incohérente vient de Phoebus, d'EPICS ou de l'alimentation elle-même.</p></details>
+            </div>
+            <ol class="steps">
+              <li>Identifier le symptôme observé dans Phoebus.</li>
+              <li>Lire la réponse associée.</li>
+              <li>Si nécessaire, appliquer la procédure de dépannage avec les outils EPICS.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>La plupart des anomalies visibles dans Phoebus doivent être confirmées par la lecture directe des PV EPICS.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Gardez sous la main les noms des PV critiques : tension mesurée, courant mesuré, état ON/OFF, Trip et ramping.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>Une action sur une consigne haute tension doit toujours être cohérente avec l'état matériel réel du canal.</p></aside>
+            </div>
+            <a class="next-link" href="#a-propos">Chapitre suivant : À propos</a>
+          </div>
+        </section>
+
+        <section class="doc-section collapsible-section" id="a-propos" data-title="À propos">
+          <button class="section-toggle" type="button" aria-expanded="true"><span>À propos</span><span aria-hidden="true">⌄</span></button>
+          <div class="section-body">
+            <p class="lead">Ce manuel accompagne l'interface de supervision de l'alimentation ISEG développée pendant le stage de Mohammed Chibani Bahi à l'IJCLab, au sein de l'équipe FIIRST, pour le projet HINA.</p>
+            <p>Le travail porte sur une interface de contrôle-commande Phoebus destinée à superviser une alimentation haute tension ISEG. Cette alimentation alimente des quadrupôles électrostatiques et publie ses données dans EPICS grâce à son IOC intégré.</p>
+            <ol class="steps">
+              <li>Conserver ce manuel avec les fichiers Phoebus associés : <code>main.bob</code>, <code>detail_channel.bob</code>, <code>voltage_settings.bob</code> et <code>current_settings.bob</code>.</li>
+              <li>Mettre à jour les captures si l'interface évolue.</li>
+              <li>Documenter toute modification de PV, de macro ou de fichier EPICS.</li>
+              <li>Compléter la section dépannage avec les incidents rencontrés pendant les tests.</li>
+            </ol>
+            <div class="callouts">
+              <aside class="callout info"><strong>Information</strong><p>L'interface est une première brique fonctionnelle du futur système de contrôle-commande global du projet HINA.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Associez chaque version du manuel à la version des displays Phoebus et des fichiers EPICS utilisés.</p></aside>
+              <aside class="callout warn"><strong>Attention</strong><p>L'intégration complète dans le système global HINA relève des prochaines phases du projet.</p></aside>
+            </div>
+            <a class="next-link" href="#accueil">Retour à l'accueil</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" type="button" aria-label="Retour en haut">↑</button>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image agrandie">
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Fermer l'image">×</button>
+    <img id="lightboxImage" src="" alt="">
+    <p id="lightboxCaption"></p>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
