@@ -101,8 +101,12 @@
             <p class="lead">Le projet HINA est l'installation expérimentale globale. L'interface décrite dans ce manuel n'est qu'une brique de son futur système de contrôle-commande : elle supervise uniquement l'alimentation haute tension ISEG utilisée pour les quadrupôles électrostatiques.</p>
             <p>Elle a été développée sous Phoebus pour rendre exploitables les données publiées par l'IOC EPICS intégré à l'alimentation. Son objectif est de donner aux utilisateurs une vue claire des 12 canaux : état ON/OFF, Trip, tensions, courants, consignes, mesures et accès aux réglages détaillés.</p>
             <p>On peut voir le contrôle-commande global de HINA comme un orchestre : cette interface correspond à un instrument, par exemple un violoncelle. Seule, elle ne pilote qu'une partie précise de l'installation ; avec les autres interfaces à venir, elle contribuera à former l'ensemble cohérent du système de contrôle-commande HINA.</p>
+            <p>Pour lancer Phoebus depuis un terminal Linux, placez-vous dans le dossier d'installation de Phoebus, puis exécutez le script de démarrage :</p>
+            <pre><code>cd /chemin/vers/phoebus
+./phoebus.sh</code></pre>
             <ol class="steps">
-              <li>Ouvrir l'écran principal <code>main.bob</code> dans Phoebus.</li>
+              <li>Démarrer Phoebus avec <code>./phoebus.sh</code>.</li>
+              <li>Ouvrir l'écran principal <code>main.bob</code> depuis le menu d'ouverture de display.</li>
               <li>Vérifier que les 12 lignes de canaux sont visibles et que les valeurs EPICS sont connectées.</li>
               <li>Contrôler l'état global de l'alimentation avec le voyant supérieur ON/OFF.</li>
               <li>Utiliser <strong>Open</strong> pour consulter la vue détaillée d'un canal, puis les fenêtres de réglage si nécessaire.</li>
@@ -123,13 +127,13 @@
             <p>Dans le cadre du développement, l'alimentation a été raccordée au réseau par un switch Ethernet et configurée avec une adresse IP fixe <code>192.168.2.2</code>. L'interface Phoebus s'appuie ensuite sur les PV publiées par l'IOC embarqué de l'alimentation, sans serveur EPICS externe supplémentaire.</p>
             <ol class="steps">
               <li>Démarrer Phoebus avec le support Display Builder.</li>
-              <li>Vérifier que le poste de contrôle atteint l'alimentation ISEG sur le réseau local.</li>
+              <li>Vérifier que le poste de contrôle atteint l'alimentation ISEG sur le réseau local avec <code>ping 192.168.2.2</code>.</li>
               <li>Contrôler que l'IOC embarqué publie les PV via Channel Access.</li>
               <li>Vérifier l'accès aux fichiers <code>main.bob</code>, <code>detail_channel.bob</code>, <code>voltage_settings.bob</code> et <code>current_settings.bob</code>.</li>
             </ol>
             <div class="callouts">
               <aside class="callout info"><strong>Information</strong><p>Les outils EPICS utiles sont <code>caget</code> pour lire une PV, <code>caput</code> pour écrire une consigne et <code>camonitor</code> pour suivre une valeur en temps réel.</p></aside>
-              <aside class="callout tip"><strong>Conseil</strong><p>Avant une session de test, vérifiez une mesure comme <code>ISEG:5230874:0:0:0:VoltageMeasure</code> avec <code>caget</code>.</p></aside>
+              <aside class="callout tip"><strong>Conseil</strong><p>Un test minimal consiste à lancer <code>ping 192.168.2.2</code>, puis à vérifier une mesure comme <code>ISEG:5230874:0:0:0:VoltageMeasure</code> avec <code>caget</code>.</p></aside>
               <aside class="callout warn"><strong>Attention</strong><p>Une PV déconnectée ou en état <code>UDF INVALID</code> indique que la valeur affichée n'est pas exploitable.</p></aside>
             </div>
             <a class="next-link" href="#lancement">Chapitre suivant : Lancement</a>
@@ -189,20 +193,19 @@
           <button class="section-toggle" type="button" aria-expanded="true"><span>Gestion des canaux</span><span aria-hidden="true">⌄</span></button>
           <div class="section-body">
             <p class="lead">Un canal est une sortie indépendante de l'alimentation. Dans ce projet, les 12 canaux doivent pouvoir être surveillés séparément.</p>
-            <p>La gestion d'un canal consiste à vérifier son état réel, ses consignes, ses mesures, sa rampe éventuelle et les alarmes associées. Les fenêtres détaillées reprennent les blocs Voltage, Current, States et Alarmes pour le canal sélectionné.</p>
+            <p>La gestion courante d'un canal se fait d'abord depuis l'écran principal : l'utilisateur repère la ligne du canal, vérifie l'état ON/OFF, le Trip, la consigne tension et les mesures. Pour l'analyse complète d'un canal, consulter ensuite la section <a href="#vue-detaillee">Vue détaillée</a>.</p>
             <ol class="steps">
               <li>Identifier le canal dans l'écran principal.</li>
               <li>Contrôler Trip et les mesures affichées.</li>
-              <li>Ouvrir la vue détaillée du canal avec <strong>Open</strong>.</li>
-              <li>Vérifier <strong>Canal On réel</strong>, <strong>Rampe en cours</strong>, <strong>Mode CV</strong> et <strong>Mode CC</strong>.</li>
+              <li>En cas d'anomalie ou de doute, utiliser <strong>Open</strong> puis se reporter à la section <a href="#vue-detaillee">Vue détaillée</a>.</li>
             </ol>
             <div class="callouts">
-              <aside class="callout info"><strong>Information</strong><p>La vue détaillée distingue la commande ON/OFF et l'état réel du canal, ce qui permet de détecter une commande refusée ou bloquée.</p></aside>
+              <aside class="callout info"><strong>Information</strong><p>Cette section se limite aux actions visibles sur l'écran principal ; les états internes du canal sont détaillés plus loin.</p></aside>
               <aside class="callout tip"><strong>Conseil</strong><p>Après une modification, surveillez la rampe et attendez que la mesure se stabilise avant de passer au canal suivant.</p></aside>
               <aside class="callout warn"><strong>Attention</strong><p>Un canal peut rester OFF malgré une commande si un Trip, une limite ou une condition matérielle interdit l'activation.</p></aside>
             </div>
             <figure class="image-card">
-              <img src="images/main.png" alt="Capture de la liste des canaux avec boutons ON OFF et Details" data-full="images/main.png">
+              <img src="images/gestion_channel_main.png" alt="Capture de la liste des canaux avec boutons ON OFF et Details" data-full="images/gestion_channel_main.png">
               <figcaption>Gestion des canaux depuis l'écran principal : ON/OFF, Trip, consignes, mesures et Details.</figcaption>
             </figure>
             <a class="next-link" href="#reglage-tension">Chapitre suivant : Réglage de la tension</a>
