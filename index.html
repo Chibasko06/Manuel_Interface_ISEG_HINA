@@ -240,7 +240,7 @@
               <aside class="callout warn"><strong>Attention</strong><p>Ne changez pas le coefficient VTC sans vérifier que l'option matérielle et le capteur de température sont présents.</p></aside>
             </div>
             <figure class="image-card">
-              <img src="images/voltage_settings.png" alt="Capture reelle de la fenetre Voltage settings du canal 0" data-full="images/voltage_settings.png">
+              <img src="images/open_voltage_settings.png" alt="Capture reelle de la fenetre Voltage settings du canal 0" data-full="images/open_voltage_settings.png">
               <figcaption>Fenêtre Voltage réelle : consigne, mesure, limites et vitesses de rampe du canal.</figcaption>
             </figure>
             <a class="next-link" href="#reglage-courant">Chapitre suivant : Réglage du courant</a>
@@ -278,7 +278,7 @@
               <aside class="callout warn"><strong>Attention</strong><p>Une augmentation de <strong>Current Set</strong> ne doit pas servir à contourner un défaut ou une fuite réelle.</p></aside>
             </div>
             <figure class="image-card">
-              <img src="images/current_settings.png" alt="Capture reelle de la fenetre Current settings du canal 0" data-full="images/current_settings.png">
+              <img src="images/open_current_settings.png" alt="Capture reelle de la fenetre Current settings du canal 0" data-full="images/open_current_settings.png">
               <figcaption>Fenêtre Current réelle : limites, mesures, rampes et paramètres de Trip.</figcaption>
             </figure>
             <a class="next-link" href="#vue-detaillee">Chapitre suivant : Vue détaillée</a>
@@ -296,8 +296,8 @@
                 <tr><td>État du canal</td><td>Vue synthétique de l'état du canal dans le bloc States.</td></tr>
                 <tr><td>ON réel</td><td>Retour matériel indiquant si le canal est réellement activé, indépendamment de la commande demandée.</td></tr>
                 <tr><td>Trip</td><td>Voyant du bloc Alarmes signalant un déclenchement de sécurité.</td></tr>
-                <tr><td>Current Limit</td><td>Voyant indiquant que la limite de courant est atteinte ou active.</td></tr>
-                <tr><td>Voltage Limit</td><td>Voyant indiquant que la limite de tension est atteinte ou active.</td></tr>
+                <tr><td>Current Limit</td><td>Voyant indiquant que la limite de courant est atteinte.</td></tr>
+                <tr><td>Voltage Limit</td><td>Voyant indiquant que la limite de tension est atteinte.</td></tr>
                 <tr><td>Status</td><td>État interprété par l'interface à partir des PV du canal.</td></tr>
                 <tr><td>Status brut</td><td>Code d'état brut renvoyé par l'alimentation, utile lors d'un diagnostic avancé.</td></tr>
                 <tr><td>CV</td><td>Constant Voltage : le canal fonctionne en régulation de tension.</td></tr>
@@ -379,10 +379,6 @@
               <aside class="callout tip"><strong>Conseil</strong><p>Si une mesure ne se met pas à jour, vérifiez d'abord son mode de scan avant de chercher un défaut matériel.</p></aside>
               <aside class="callout warn"><strong>Attention</strong><p>Ne concluez pas qu'une valeur Phoebus est correcte tant que la PV n'a pas été validée côté EPICS ou iCS2.</p></aside>
             </div>
-            <figure class="image-card">
-              <img src="images/main.png" alt="Capture de l'ecran principal utilise pour diagnostiquer les PV et canaux" data-full="images/main.png">
-              <figcaption>L'écran principal permet d'identifier rapidement si le problème touche un canal ou l'ensemble des PV.</figcaption>
-            </figure>
             <a class="next-link" href="#glossaire">Chapitre suivant : Glossaire</a>
           </div>
         </section>
